@@ -31,7 +31,7 @@ public class ShapeController {
     }
 
     @GetMapping("/{type}")
-    public ResponseEntity getByType(@PathVariable String type) {
+    public ResponseEntity<List<ShapeDto>> getByType(@PathVariable String type) {
         List<Shape> shapes = shapeService.findByType(type);
         List<ShapeDto> dtos = shapes.stream().map(this::toDto).collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
