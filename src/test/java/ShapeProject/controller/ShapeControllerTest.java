@@ -197,7 +197,7 @@ class ShapeControllerTest {
         Square square = new Square();
         square.setSide(5.00);
 
-        String type = "wheel";
+        String type = "Wheel";
 
         List<Shape> shapeList = shapeService.getShape();
         shapeList.add(wheel);
