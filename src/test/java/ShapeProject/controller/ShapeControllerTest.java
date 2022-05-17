@@ -3,6 +3,7 @@ package ShapeProject.controller;
 import ShapeProject.ShapeMain;
 import ShapeProject.model.Command.CreateShapeCommand;
 import ShapeProject.model.Shape;
+import ShapeProject.model.ShapeType;
 import ShapeProject.model.Square;
 import ShapeProject.model.Wheel;
 import ShapeProject.repository.ShapeRepository;
@@ -204,7 +205,7 @@ class ShapeControllerTest {
         shapeList.add(square);
         shapeList.add(wheelSecond);
 
-        List<Shape> shapeByType = shapeService.findByType(type);
+        List<Shape> shapeByType = shapeService.findByType(ShapeType.Wheel);
 
 
         //when

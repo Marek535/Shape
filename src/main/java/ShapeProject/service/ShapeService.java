@@ -1,10 +1,7 @@
 package ShapeProject.service;
 
+import ShapeProject.model.*;
 import ShapeProject.model.Command.CreateShapeCommand;
-import ShapeProject.model.Rectangle;
-import ShapeProject.model.Shape;
-import ShapeProject.model.Square;
-import ShapeProject.model.Wheel;
 import ShapeProject.repository.ShapeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,15 +17,15 @@ public class ShapeService {
     private final ShapeRepository shapeRepository;
 
 
-    private final Map<String, ShapeCreator> mapOfShape = new HashMap<>();
+    private final Map<ShapeType, ShapeCreator> mapOfShape = new HashMap<>();
 
     public List<Shape> getShape() {
         return shapeRepository.getShapeList();
     }
 
-    public List<Shape> findByType(String type) {
+    public List<Shape> findByType(ShapeType type) {
 
-        return shapeRepository.getShapeList().stream().filter(x -> x.getClass().equals(type)).collect(Collectors.toList());
+        return shapeRepository.getShapeList().stream().filter(x -> x.getType().equals(type)).collect(Collectors.toList());
     }
 
     @FunctionalInterface
@@ -38,14 +35,15 @@ public class ShapeService {
 
     @PostConstruct
     public void init() {
-        mapOfShape.put("Rectangle", this::createNewRectangle);
-        mapOfShape.put("Square", this::createNewSqaure);
-        mapOfShape.put("Wheel", this::createNewWheel);
+        mapOfShape.put(ShapeType.Rectangle, this::createNewRectangle);
+        mapOfShape.put(ShapeType.Square, this::createNewSqaure);
+        mapOfShape.put(ShapeType.Wheel, this::createNewWheel);
     }
 
     public Shape save(CreateShapeCommand command) {
-        shapeRepository.getShapeList().add(mapOfShape.get(command.getName()).shape(command));
-        return mapOfShape.get(command.getName()).shape(command);
+        ShapeType shapeType = ShapeType.valueOf(command.getName());
+        shapeRepository.getShapeList().add(mapOfShape.get(shapeType).shape(command));
+        return mapOfShape.get(shapeType).shape(command);
     }
 
     public Wheel createNewWheel(CreateShapeCommand command) {
