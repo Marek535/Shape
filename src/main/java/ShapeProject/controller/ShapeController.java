@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,7 +32,9 @@ public class ShapeController {
 
     @GetMapping("/{type}")
     public ResponseEntity getByType(@PathVariable String type) {
-        return ResponseEntity.ok(shapeService.findByType(type).stream().map(this::toDto).collect(Collectors.toList()));
+        List<Shape> shapes = shapeService.findByType(type);
+        List<ShapeDto> dtos = shapes.stream().map(this::toDto).collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     private ShapeDto toDto(Shape shape) {
