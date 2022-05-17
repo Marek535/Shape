@@ -8,6 +8,10 @@ import lombok.Setter;
 public class Square extends Shape {
     private double side;
 
+    public Square() {
+        super(ShapeType.Square);
+    }
+
     @Override
     public double field() {
         return side*side;

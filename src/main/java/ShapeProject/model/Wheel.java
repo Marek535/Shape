@@ -8,6 +8,9 @@ import lombok.Setter;
 public class Wheel extends Shape {
     private double radius;
 
+    public Wheel(){
+        super(ShapeType.Wheel);
+    }
     @Override
     public double field() {
         return Math.PI * radius * radius;
