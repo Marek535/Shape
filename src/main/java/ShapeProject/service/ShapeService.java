@@ -27,10 +27,24 @@ public class ShapeService {
     }
 
     public List<Shape> findByType(String type) {
-
-        return shapeRepository.getShapeList().stream().filter(x -> x.getClass().equals(type)).collect(Collectors.toList());
+        Class<? extends Shape> clazz = getShapeClass(type);
+        return findByType(clazz);
     }
 
+    public List<Shape> findByType(Class<? extends Shape> clazz) {
+        List<Shape> allShapes = shapeRepository.getShapeList();
+        return allShapes.stream().filter(x -> clazz.isInstance(x)).collect(Collectors.toList());
+    }
+
+    protected Class<? extends Shape> getShapeClass(String type) {
+        Class<? extends Shape> clazz;
+        try {
+            clazz = (Class<? extends Shape>) Class.forName(Shape.class.getPackageName() + '.' + type);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e); //TODO exception handling
+        }
+        return clazz;
+    }
     @FunctionalInterface
     interface ShapeCreator {
         Shape shape(CreateShapeCommand nameOfShape);
