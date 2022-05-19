@@ -29,7 +29,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest(classes = ShapeMain.class)
@@ -207,11 +211,12 @@ class ShapeControllerTest {
 
         List<Shape> shapeByType = shapeService.findByType(ShapeType.Wheel);
 
-
-        //when
-        mockMvc.perform(MockMvcRequestBuilders.get("/shape/"+type))
-                .andExpect(status().isOk());
         //then
         assertEquals(2,shapeByType.size());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/shape/" + type))
+               // .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 }
